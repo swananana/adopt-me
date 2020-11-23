@@ -31446,7 +31446,7 @@ if (undefined === "mock") {
 }
 
 module.exports.ANIMALS = require("./animals");
-},{"./impl":"../node_modules/@frontendmasters/pet/impl.js","./animals":"../node_modules/@frontendmasters/pet/animals.js"}],"SearchParams.js":[function(require,module,exports) {
+},{"./impl":"../node_modules/@frontendmasters/pet/impl.js","./animals":"../node_modules/@frontendmasters/pet/animals.js"}],"useDropdown.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -31456,7 +31456,73 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _pet = require("@frontendmasters/pet");
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+var useDropdown = function useDropdown(label, defaultState, options) {
+  var _useState = (0, _react.useState)(defaultState),
+      _useState2 = _slicedToArray(_useState, 2),
+      state = _useState2[0],
+      setState = _useState2[1];
+
+  var id = "use-dropdown-".concat(label.replace(" ", "").toLowerCase());
+
+  var Dropdown = function Dropdown() {
+    var _React$createElement;
+
+    return /*#__PURE__*/_react.default.createElement("label", {
+      htmlFor: id
+    }, label, /*#__PURE__*/_react.default.createElement("select", (_React$createElement = {
+      id: id,
+      onChange: function onChange(e) {
+        return setState(e.target.value);
+      },
+      value: state
+    }, _defineProperty(_React$createElement, "onChange", function onChange(e) {
+      return setState(e.target.value);
+    }), _defineProperty(_React$createElement, "disabled", !options.length), _React$createElement), /*#__PURE__*/_react.default.createElement("option", null, "ALL"), options.map(function (item) {
+      return /*#__PURE__*/_react.default.createElement("option", {
+        key: item,
+        value: item
+      }, item);
+    })));
+  };
+
+  return [state, Dropdown, setState];
+};
+
+var _default = useDropdown;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js"}],"SearchParams.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _pet = _interopRequireWildcard(require("@frontendmasters/pet"));
+
+var _useDropdown5 = _interopRequireDefault(require("./useDropdown"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
 
@@ -31478,13 +31544,39 @@ var SearchParams = function SearchParams() {
   var _useState = (0, _react.useState)("Seattle, WA"),
       _useState2 = _slicedToArray(_useState, 2),
       location = _useState2[0],
-      setLocation = _useState2[1];
+      setLocation = _useState2[1]; // const [animal, setAnimal] = useState(" ");
 
-  var _useState3 = (0, _react.useState)("dog"),
+
+  var _useState3 = (0, _react.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
-      animal = _useState4[0],
-      setAnimal = _useState4[1];
+      breeds = _useState4[0],
+      setBreeds = _useState4[1];
 
+  var _useDropdown = (0, _useDropdown5.default)("Animal", "dog", _pet.ANIMALS),
+      _useDropdown2 = _slicedToArray(_useDropdown, 2),
+      animal = _useDropdown2[0],
+      AnimalDropdown = _useDropdown2[1];
+
+  var _useDropdown3 = (0, _useDropdown5.default)("breed", "", breeds),
+      _useDropdown4 = _slicedToArray(_useDropdown3, 3),
+      breed = _useDropdown4[0],
+      BreedDropdown = _useDropdown4[1],
+      setBreed = _useDropdown4[2]; // const [breed, setBreed] = useState(" ");
+
+
+  (0, _react.useEffect)(function () {
+    // pet.breeds("dog").then(console.log, console.error);
+    setBreeds([]);
+    setBreed("");
+    _pet.default.breeds(animal).then(function (_ref) {
+      var breeds = _ref.breeds;
+      var breedStrings = breeds.map(function (_ref2) {
+        var name = _ref2.name;
+        return name;
+      });
+      setBreeds(breedStrings);
+    }), console.error;
+  }, [animal, setBreeds, setBreed]);
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "search-params"
   }, /*#__PURE__*/_react.default.createElement("h1", null, location), /*#__PURE__*/_react.default.createElement("form", null, /*#__PURE__*/_react.default.createElement("label", {
@@ -31496,28 +31588,12 @@ var SearchParams = function SearchParams() {
     onChange: function onChange(e) {
       return setLocation(e.target.value);
     }
-  })), /*#__PURE__*/_react.default.createElement("label", {
-    htmlFor: "animal"
-  }, "Animal", /*#__PURE__*/_react.default.createElement("select", {
-    id: "animal",
-    value: "animal",
-    onChange: function onChange(e) {
-      return setAnimal(e.target.value);
-    },
-    onBlur: function onBlur(e) {
-      return setAnimal(e.target.value);
-    }
-  }, /*#__PURE__*/_react.default.createElement("option", null, "All"), _pet.ANIMALS.map(function (animal) {
-    return /*#__PURE__*/_react.default.createElement("option", {
-      key: animal,
-      value: animal
-    }, animal);
-  }))), /*#__PURE__*/_react.default.createElement("button", null, "Submit")));
+  })), /*#__PURE__*/_react.default.createElement(AnimalDropdown, null), /*#__PURE__*/_react.default.createElement(BreedDropdown, null), ";", /*#__PURE__*/_react.default.createElement("button", null, "Submit")));
 };
 
 var _default = SearchParams;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@frontendmasters/pet":"../node_modules/@frontendmasters/pet/index.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@frontendmasters/pet":"../node_modules/@frontendmasters/pet/index.js","./useDropdown":"useDropdown.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
